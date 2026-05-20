@@ -1,5 +1,9 @@
 # TailAdmin React - Free React Tailwind Admin Dashboard Template
 
+## AbiTrack Documentation
+
+- [API Reference](API.md)
+
 #### Preview
 
 - [Demo](https://themewagon.github.io/TailAdmin/)

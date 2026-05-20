@@ -21,11 +21,14 @@ def register():
     org_name = data.get("organizationName", "My Organization").strip()
     account_type = data.get("accountType", "business")
     category = data.get("category", "")
+    print(f"[auth.register] email={email} name={name} accountType={account_type}", flush=True)
 
     if not email or not password or not name:
+        print("[auth.register] missing required fields", flush=True)
         return jsonify({"message": "email, password, and name are required"}), 400
 
     if User.query.filter_by(email=email).first():
+        print(f"[auth.register] duplicate email={email}", flush=True)
         return jsonify({"message": "Email already registered"}), 409
 
     tenant = Tenant(name=org_name, slug=org_name.lower().replace(" ", "-") + "-" + str(uuid.uuid4())[:6],
@@ -39,6 +42,7 @@ def register():
     db.session.commit()
 
     token = _make_token(user)
+    print(f"[auth.register] created user_id={user.id} tenant_id={tenant.id}", flush=True)
     return jsonify({"token": token, "user": {"id": user.id, "name": user.name, "email": user.email, "role": user.role.value, "accountType": account_type}}), 201
 
 
@@ -47,12 +51,19 @@ def login():
     data = request.get_json()
     email = data.get("email", "").strip().lower()
     password = data.get("password", "")
+    print(f"[auth.login] email={email}", flush=True)
 
     user = User.query.filter_by(email=email, is_active=True).first()
-    if not user or not user.check_password(password):
+    if not user:
+        print(f"[auth.login] no active user for email={email}", flush=True)
+        return jsonify({"message": "Invalid email or password"}), 401
+
+    if not user.check_password(password):
+        print(f"[auth.login] wrong password for user_id={user.id}", flush=True)
         return jsonify({"message": "Invalid email or password"}), 401
 
     token = _make_token(user)
+    print(f"[auth.login] success user_id={user.id} tenant_id={user.tenant_id}", flush=True)
     return jsonify({"token": token, "user": {"id": user.id, "name": user.name, "email": user.email, "role": user.role.value, "accountType": user.tenant.account_type}}), 200
 
 

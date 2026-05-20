@@ -6,6 +6,8 @@
     "homepage": "https://themewagon.github.io/TailAdmin",
     "scripts": {
         "dev": "vite",
+        "backend": "cd backend && python3 run.py",
+        "dev:all": "./run-dev.sh",
         "build": "vite build",
         "deploy": "vite build && gh-pages --dotfiles -d dist",
         "lint": "eslint .",
