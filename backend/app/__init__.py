@@ -33,7 +33,7 @@ def create_app(config_class=Config):
     app.register_blueprint(api_bp, url_prefix="/api")
 
     # Health check
-    @app.get("/health")
+    @app.get("/healths")
     def health():
         return {"status": "ok"}
 

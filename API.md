@@ -7,7 +7,7 @@ This document lists every backend endpoint currently exposed to the frontend and
 Frontend requests use `src/api/client.ts`.
 
 ```ts
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5001/api/v1";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "https://abitrack-9aa35a0b4b27.herokuapp.com/api/v1";
 ```
 
 Backend route prefix:
